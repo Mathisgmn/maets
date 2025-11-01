@@ -1,37 +1,48 @@
-import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
-import UserModel from "./userModel.js";
-import GameModel from "./gameModel.js";
-import RoleModel from "./roleModel.js";
-import UserGameModel from "./userGameModel.js";
-import UserRoleModel from "./userRoleModel.js";
+import { sequelize } from "../config/database.js";
+import Game from "./gameModel.js";
+import User from "./userModel.js";
+import Role from "./roleModel.js";
+import UserRole from "./userRoleModel.js";
+import UserGame from "./userGameModel.js";
+import GameConfig from "./gameConfigModel.js";
 
-dotenv.config();
+/**
+ * Associations
+ */
+// User <-> Role (many-to-many)
+User.belongsToMany(Role, {
+  through: UserRole,
+  foreignKey: "user_id",
+  otherKey: "role_id",
+});
+Role.belongsToMany(User, {
+  through: UserRole,
+  foreignKey: "role_id",
+  otherKey: "user_id",
+});
 
-const sequelize = new Sequelize(
-  process.env.POSTGRES_DB,
-  process.env.POSTGRES_USER,
-  process.env.POSTGRES_PASSWORD,
-  {
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    dialect: "postgres",
-    logging: false,
-  }
-);
+// User <-> Game (many-to-many)
+User.belongsToMany(Game, {
+  through: UserGame,
+  foreignKey: "user_id",
+  otherKey: "game_id",
+});
+Game.belongsToMany(User, {
+  through: UserGame,
+  foreignKey: "game_id",
+  otherKey: "user_id",
+});
 
-// Initialisation
-const User = UserModel(sequelize);
-const Game = GameModel(sequelize);
-const Role = RoleModel(sequelize);
-const UserGame = UserGameModel(sequelize);
-const UserRole = UserRoleModel(sequelize);
+// Game -> GameConfig (one-to-many)
+Game.hasMany(GameConfig, { foreignKey: "game_id" });
+GameConfig.belongsTo(Game, { foreignKey: "game_id" });
 
-
-User.belongsToMany(Game, { through: UserGame, foreignKey: "userId" });
-Game.belongsToMany(User, { through: UserGame, foreignKey: "gameId" });
-
-User.belongsToMany(Role, { through: UserRole, foreignKey: "userId" });
-Role.belongsToMany(User, { through: UserRole, foreignKey: "roleId" });
-
-export { sequelize, User, Game, Role, UserGame, UserRole };
+export {
+  sequelize,
+  Game,
+  User,
+  Role,
+  UserRole,
+  UserGame,
+  GameConfig,
+};

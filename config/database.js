@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import mongoose from "mongoose"; 
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -26,3 +27,9 @@ export const connectPostgres = async () => {
     console.error("❌ Impossible de se connecter à PostgreSQL :", err);
   }
 };
+
+export async function connectMongo() {
+  const uri = process.env.MONGO_URI || "mongodb://mongo:27017/maets";
+  await mongoose.connect(uri, { dbName: "maets" });
+  console.log("✅ Connexion à MongoDB réussie !");
+}

@@ -1,10 +1,10 @@
 import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
 
-const UserRole = sequelize.define(
-  "user_role",
+const UserGame = sequelize.define(
+  "user_game",
   {
-    id_user_role: {
+    id_user_game: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -14,15 +14,20 @@ const UserRole = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    role_id: {
+    game_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    progress: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+    },
   },
   {
-    tableName: "user_role",
+    tableName: "user_game",
     timestamps: false,
   }
 );
 
-export default UserRole;
+export default UserGame;

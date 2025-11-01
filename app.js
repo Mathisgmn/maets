@@ -1,15 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectDB } from "./models/index.js";
-
+import { connectPostgres, connectMongo } from "./config/database.js";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-await connectDB();
+await connectPostgres();
+await connectMongo();
 
 app.get("/", (req, res) => res.send("✅ Maets backend is running!"));
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(process.env.PORT || 3000, "0.0.0.0", () => console.log("Server up"));
