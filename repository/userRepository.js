@@ -46,5 +46,5 @@ export async function deleteUser(id) {
 }
 
 export async function getAllUsers() {
-  return await Game.findAll();
+  return await User.findAll();
 }

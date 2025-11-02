@@ -1,4 +1,5 @@
 import { GameRepository as gameRepo } from "../repository/index.js";
+import { UserGameRepository} from "../repository/index.js";
 
 export async function createGame({ title }) {
   const exists = await gameRepo.gameExists(title);
@@ -43,3 +44,9 @@ export async function deleteGame(id) {
   }
   return true;
 }
+
+export async function getGamesForUser(idUser) {
+  const games = await UserGameRepository.listUserLibrary(idUser);
+  return games.map(link => link.game);
+}
+

@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { sequelize, connectMongo } from "./config/database.js";
 import { associate } from "./models/index.js";
-import gameRouter from "./routers/gameRouter.js";
+import apiRouter from "./routers/index.js";
 // import { errorHandler } from "./middlewares/errorHandler.js"; // si tu l’as
 // import { requireAuth } from "./middlewares/requireAuth.js"; // si besoin plus tard
 
@@ -27,8 +27,7 @@ console.log("✅ Connexion MongoDB réussie !");
 // 🔹 Routes
 app.get("/", (req, res) => res.send("✅ Maets backend is running!"));
 
-// Route principale pour la ressource "games"
-app.use("/api/games", gameRouter);
+app.use("/api", apiRouter);
 
 // 🔹 Middleware global d’erreurs (toujours en dernier)
 // app.use(errorHandler);

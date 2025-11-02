@@ -50,3 +50,13 @@ export async function deleteGame(req, res, next) {
     next(error);
   }
 }
+
+export async function getMyGames(req, res, next) {
+  try {
+    const idUser = req.user.sub; // vient du JWT décodé par requireAuth
+    const games = await GameService.getGamesForUser(idUser);
+    res.json({ ok: true, data: games });
+  } catch (error) {
+    next(error);
+  }
+}

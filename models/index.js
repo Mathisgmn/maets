@@ -17,11 +17,9 @@ export const associate = () => {
     as: "users",
   });
 
-  UserGame.belongsTo(User, { foreignKey: "idUser", as: "user" });
+  // pour que include: { as: "game" } fonctionne
   UserGame.belongsTo(Game, { foreignKey: "idGame", as: "game" });
-
-  User.hasMany(UserGame, { foreignKey: "idUser", as: "userGames" });
-  Game.hasMany(UserGame, { foreignKey: "idGame", as: "userGames" });
+  UserGame.belongsTo(User, { foreignKey: "idUser", as: "user" });
 };
 
 export { Game, User, UserGame };
