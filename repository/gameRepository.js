@@ -1,6 +1,4 @@
-import gameModel from "../models/gameModel";
-
-const Game = gameModel;
+import { Game } from "../models/index.js";
 
 export async function createGame({ title }) {
   const game = await Game.create({ title });
