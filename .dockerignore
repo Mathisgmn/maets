@@ -1,4 +1,3 @@
-# Ignore common noisy files
 node_modules
 npm-debug.log
 .env

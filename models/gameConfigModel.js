@@ -1,32 +1,9 @@
-import { sequelize } from "../config/database.js";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
 
-const GameConfig = sequelize.define(
-  "game_config",
-  {
-    id_game_config: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    game_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    key: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
-    value: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-  },
-  {
-    tableName: "game_config",
-    timestamps: false,
-  }
-);
+const gameConfigSchema = new mongoose.Schema({
+  id: { type: String, default: () => crypto.randomUUID(), required: true },
+  resolution: { type: String, default: "1920x1080" },
+  volume: { type: Number, default: 100 },
+}, { timestamps: false });
 
-export default GameConfig;
+export default mongoose.model("GameConfig", gameConfigSchema);

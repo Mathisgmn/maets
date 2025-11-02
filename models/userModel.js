@@ -1,46 +1,11 @@
 import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
 
-const User = sequelize.define(
-  "users",
-  {
-    id_user: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    username: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: true,
-    },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    isDeleted: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-  },
-  {
-    tableName: "users",
-    timestamps: false,
-    defaultScope: {
-      where: { isDeleted: false },
-    },
-    scopes: {
-      deleted: { where: { isDeleted: true } },
-      withDeleted: {},
-    },
-  }
-);
+const User = sequelize.define("user", {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
+  username: { type: DataTypes.STRING(25), allowNull: false, unique: true },
+  password_hash: { type: DataTypes.STRING(255), allowNull: false },
+  is_admin: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false },
+}, { timestamps: false });
 
 export default User;
