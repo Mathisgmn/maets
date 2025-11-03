@@ -120,9 +120,12 @@ async function start() {
 }
 
 // Démarrage
-start().catch((e) => {
-  console.error('❌ Erreur au démarrage de l’application :', e);
-  process.exit(1);
-});
+if (process.env.NODE_ENV !== 'test') {
+  start().catch((e) => {
+    console.error('❌ Erreur au démarrage de l’application :', e);
+    process.exit(1);
+  });
+}
 
+export { start };
 export default app;

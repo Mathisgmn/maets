@@ -1,4 +1,8 @@
-import { AuthService } from "../services/index.js";
+import { AuthService as AuthServiceImpl } from "../services/index.js";
+
+function getAuthService() {
+  return globalThis.__TEST_SERVICES__?.AuthService ?? AuthServiceImpl;
+}
 
 export async function register(req, res, next) {
   try {
@@ -7,7 +11,7 @@ export async function register(req, res, next) {
       const e = new Error("`username` and `password` are required");
       e.status = 400; throw e;
     }
-    const out = await AuthService.register({ username, password, is_admin: !!is_admin });
+    const out = await getAuthService().register({ username, password, is_admin: !!is_admin });
     res.status(201).json({ ok: true, data: out });
   } catch (err) { next(err); }
 }
@@ -19,7 +23,7 @@ export async function login(req, res, next) {
       const e = new Error("`username` and `password` are required");
       e.status = 400; throw e;
     }
-    const out = await AuthService.login({ username, password });
+    const out = await getAuthService().login({ username, password });
     res.json({ ok: true, data: out });
   } catch (err) { next(err); }
 }

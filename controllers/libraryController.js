@@ -1,9 +1,13 @@
-import { LibraryService } from "../services/index.js";
+import { LibraryService as LibraryServiceImpl } from "../services/index.js";
+
+function getLibraryService() {
+  return globalThis.__TEST_SERVICES__?.LibraryService ?? LibraryServiceImpl;
+}
 
 // GET /api/lib
 export async function myLibrary(req, res, next) {
   try {
-    const items = await LibraryService.listLibrary(req.user.sub);
+    const items = await getLibraryService().listLibrary(req.user.sub);
     res.json({ ok: true, data: items });
   } catch (err) { next(err); }
 }
@@ -13,7 +17,7 @@ export async function addGameForUser(req, res, next) {
   try {
     const { idUser, idGame } = req.params;
     const initialConfig = req.body ?? {};
-    const out = await LibraryService.addGameForUser({ idUser, idGame, initialConfig });
+    const out = await getLibraryService().addGameForUser({ idUser, idGame, initialConfig });
     res.status(201).json({ ok: true, data: out });
   } catch (err) { next(err); }
 }
@@ -22,7 +26,7 @@ export async function addGameForUser(req, res, next) {
 export async function removeGameForUser(req, res, next) {
   try {
     const { idUser, idGame } = req.params;
-    await LibraryService.removeGameForUser({ idUser, idGame });
+    await getLibraryService().removeGameForUser({ idUser, idGame });
     res.status(204).send();
   } catch (err) { next(err); }
 }
@@ -31,7 +35,7 @@ export async function removeGameForUser(req, res, next) {
 export async function getMyGameConfig(req, res, next) {
   try {
     const { idGame } = req.params;
-    const cfg = await LibraryService.getGameConfigForUser({ idUser: req.user.sub, idGame });
+    const cfg = await getLibraryService().getGameConfigForUser({ idUser: req.user.sub, idGame });
     res.json({ ok: true, data: cfg });
   } catch (err) { next(err); }
 }
@@ -41,7 +45,7 @@ export async function updateMyGameConfig(req, res, next) {
   try {
     const { idGame } = req.params;
     const values = req.body ?? {};
-    const cfg = await LibraryService.updateGameConfigForUser({ idUser: req.user.sub, idGame, values });
+    const cfg = await getLibraryService().updateGameConfigForUser({ idUser: req.user.sub, idGame, values });
     res.json({ ok: true, data: cfg });
   } catch (err) { next(err); }
 }
@@ -49,7 +53,7 @@ export async function updateMyGameConfig(req, res, next) {
 export async function removeMyGame(req, res, next) {
   try {
     const { idGame } = req.params;
-    await LibraryService.removeGameForUser({ idUser: req.user.sub, idGame });
+    await getLibraryService().removeGameForUser({ idUser: req.user.sub, idGame });
     res.status(204).send();
   } catch (err) { next(err); }
 }
