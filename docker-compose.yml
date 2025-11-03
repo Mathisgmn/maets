@@ -35,8 +35,13 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - MONGO_URI=mongodb://mongo:27017/maets
+      - HTTPS=true
+      - HTTPS_PORT=3443
+      - SSL_KEY_PATH=/app/certs/key.pem
+      - SSL_CERT_PATH=/app/certs/cert.pem
     ports:
       - "3000:3000"
+      - "3443:3443"
     command: npm run dev
     volumes:
       - ./:/app
