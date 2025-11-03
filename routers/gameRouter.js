@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { GameController } from "../controllers/index.js";
 import { requireAuth } from "../middleware/auth.jwt.js";
-// import { requireAuth, requireAdmin } from "../middlewares/requireAuth.js"; // tu pourras les activer plus tard
+import { requireRole } from "../middleware/auth.jwt.js";
 
 const router = Router();
 
@@ -14,11 +14,13 @@ router.get("/", GameController.getAllGames);
 router.get("/:id", GameController.getGameById);
 
 //POST création d’un jeu (admin plus tard)
-router.post("/", /* requireAdmin, */ GameController.createGame);
+router.post("/", requireAuth, requireRole("admin"), GameController.createGame);
 
 //PATCH mise à jour d’un jeu (admin plus tard)
 
 //DELETE suppression d’un jeu (admin plus tard)
-router.delete("/:id", /* requireAdmin, */ GameController.deleteGame);
+router.delete("/:id", requireAuth, requireRole("admin"), GameController.deleteGame);
+
+router.patch("/:id", requireAuth, requireRole("admin"),GameController.updateGame);
 
 export default router;
